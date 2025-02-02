@@ -19,4 +19,3 @@ Mobil uyumlu tasarım
 Öneri ve geri bildirimleriniz için:
 Email : codehtml@mail.com
  Önemli Not
-Bu web sitesi sadece bilgilendirme amaçlıdır. Acil durumlarda resmi kurumların açıklamalarını takip ediniz ve gerekli durumlarda AFAD (122) veya Acil Çağrı (112) numaralarını arayınız.
