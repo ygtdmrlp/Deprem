@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Türkiye Deprem Verileri</title>
+        <link>https://depremverileri.com</link>
+        <description>Türkiye'deki son depremler hakkında güncel bilgiler</description>
+        <language>tr-TR</language>
+        <lastBuildDate>Mon, 1 Jan 2024 00:00:00 GMT</lastBuildDate>
+        <atom:link href="https://depremverileri.com/rss.xml" rel="self" type="application/rss+xml"/>
+        <category>Deprem</category>
+        <copyright>Copyright 2024, Deprem Verileri</copyright>
+        <docs>https://depremverileri.com/rss</docs>
+        <generator>Deprem Verileri RSS Generator</generator>
+        <ttl>5</ttl>
+    </channel>
+</rss> 

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Türkiye Deprem Verileri projesi hakkında bilgiler">
+    <title>Hakkında - Deprem Verileri</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <i class="fas fa-earthquake me-2"></i>
+                    Türkiye Deprem Verileri
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html"><i class="fas fa-home me-1"></i> Ana Sayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="veri.html"><i class="fas fa-chart-bar me-1"></i> İstatistikler</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="hakkinda.html"><i class="fas fa-info-circle me-1"></i> Hakkında</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="iletisim.html"><i class="fas fa-envelope me-1"></i> İletişim</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mt-4">
+        <div class="row g-4">
+            <div class="col-12">
+                <section class="about-section">
+                    <div class="card shadow">
+                        <div class="card-body p-4">
+                            <h1 class="h3 mb-4 text-primary">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Proje Hakkında
+                            </h1>
+                            <p class="lead">
+                                Bu proje, Türkiye'deki deprem verilerini gerçek zamanlı olarak takip etmek ve vatandaşları bilgilendirmek amacıyla geliştirilmiştir.
+                            </p>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <h2 class="h5 text-primary">
+                                        <i class="fas fa-database me-2"></i>
+                                        Veri Kaynağı
+                                    </h2>
+                                    <p>
+                                        Deprem verileri, Kandilli Rasathanesi ve Deprem Araştırma Enstitüsü'nden (KRDAE) alınmaktadır. 
+                                        Veriler 5 dakikada bir güncellenmektedir.
+                                    </p>
+                                    
+                                    <h2 class="h5 text-primary mt-4">
+                                        <i class="fas fa-code me-2"></i>
+                                        Teknolojiler
+                                    </h2>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>HTML5 ve CSS3</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>JavaScript (ES6+)</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Bootstrap 5</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Leaflet.js Harita Kütüphanesi</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h2 class="h5 text-primary">
+                                        <i class="fas fa-lightbulb me-2"></i>
+                                        Özellikler
+                                    </h2>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Gerçek zamanlı deprem verileri</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>İnteraktif harita görünümü</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Deprem büyüklüğüne göre renk kodlaması</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Detaylı deprem bilgileri</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Mobil uyumlu tasarım</li>
+                                    </ul>
+
+                                    <div class="alert alert-info mt-4" role="alert">
+                                        <i class="fas fa-envelope me-2"></i>
+                                        <strong>İletişim:</strong><br>
+                                        Öneri ve geri bildirimleriniz için:<br>
+                                        <a href="mailto:info@depremverileri.com" class="alert-link">info@depremverileri.com</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 p-4 bg-light rounded">
+                                <h2 class="h5 text-primary">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    Önemli Not
+                                </h2>
+                                <p class="mb-0">
+                                    Bu web sitesi sadece bilgilendirme amaçlıdır. Acil durumlarda resmi kurumların açıklamalarını takip ediniz ve 
+                                    gerekli durumlarda AFAD (122) veya Acil Çağrı (112) numaralarını arayınız.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Site Haritası -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">Site Haritası</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="index.html" class="text-white text-decoration-none">
+                                <i class="fas fa-home me-2"></i>Ana Sayfa
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="veri.html" class="text-white text-decoration-none">
+                                <i class="fas fa-chart-bar me-2"></i>İstatistikler
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="hakkinda.html" class="text-white text-decoration-none">
+                                <i class="fas fa-info-circle me-2"></i>Hakkında
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="iletisim.html" class="text-white text-decoration-none">
+                                <i class="fas fa-envelope me-2"></i>İletişim
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Önemli Linkler -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">Önemli Linkler</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="https://deprem.afad.gov.tr" class="text-white text-decoration-none" target="_blank">
+                                <i class="fas fa-external-link-alt me-2"></i>AFAD
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="http://www.koeri.boun.edu.tr" class="text-white text-decoration-none" target="_blank">
+                                <i class="fas fa-external-link-alt me-2"></i>Kandilli Rasathanesi
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="https://www.turkiye.gov.tr" class="text-white text-decoration-none" target="_blank">
+                                <i class="fas fa-external-link-alt me-2"></i>E-Devlet
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- İletişim -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">İletişim</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i>Acil Çağrı: 112
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i>AFAD: 122
+                        </li>
+                        <li class="mb-2">
+                            <a href="mailto:info@depremverileri.com" class="text-white text-decoration-none">
+                                <i class="fas fa-envelope me-2"></i>info@depremverileri.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Sosyal Medya -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">Sosyal Medya</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+            
+            <!-- Copyright -->
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">
+                        <small>
+                            &copy; 2024 Deprem Verileri. Tüm hakları saklıdır.
+                            <span class="mx-2">|</span>
+                            <a href="gizlilik.html" class="text-white text-decoration-none">Gizlilik Politikası</a>
+                            <span class="mx-2">|</span>
+                            <a href="sartlar.html" class="text-white text-decoration-none">Kullanım Şartları</a>
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

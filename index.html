@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Türkiye'deki son deprem verileri ve harita görünümü">
+    <title>Deprem Verileri</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="alternate" type="application/rss+xml" title="Türkiye Deprem Verileri RSS" href="rss.php">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <i class="fas fa-earthquake me-2"></i>
+                    Türkiye Deprem Verileri
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="index.html"><i class="fas fa-home me-1"></i> Ana Sayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="veri.html"><i class="fas fa-chart-bar me-1"></i> İstatistikler</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="hakkinda.html"><i class="fas fa-info-circle me-1"></i> Hakkında</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="iletisim.html"><i class="fas fa-envelope me-1"></i> İletişim</a>
+                        </li>
+                        <li class="nav-item ms-lg-3 d-none d-lg-flex align-items-center">
+                            <div class="text-light">
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                <span id="currentDate"></span>
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-clock me-1"></i>
+                                <span id="currentTime"></span>
+                                <small class="ms-1 text-muted" id="timezone"></small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mt-4">
+        <div class="row g-4">
+            <!-- Son Deprem Alert'i -->
+            <div class="col-12">
+                <div id="latestEarthquakeAlert" class="alert alert-info alert-dismissible fade" role="alert" style="display: none;">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <strong><i class="fas fa-clock me-2"></i>Son Deprem</strong>
+                            <div id="latestEarthquakeInfo" class="mt-1"></div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yeni Deprem Alert'i -->
+            <div class="col-12">
+                <div id="newEarthquakeToast" class="alert alert-danger alert-dismissible fade" role="alert" style="display: none;">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <div class="flex-grow-1">
+                            <strong>Yeni Deprem!</strong>
+                            <span id="newEarthquakeToastInfo"></span>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <section class="map-container shadow rounded">
+                    <div id="map" class="rounded"></div>
+                </section>
+            </div>
+
+            <!-- Bölgesel Deprem Durumu -->
+            <div class="col-12 mb-4">
+                <div id="regionalStatus" class="alert d-none">
+                    <div class="d-flex align-items-center">
+                        <i class="fas me-2"></i>
+                        <div class="flex-grow-1" id="regionalStatusText"></div>
+                        <small class="text-muted ms-2" id="lastCheckTime"></small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <section class="earthquake-data">
+                    <!-- Yeni Deprem Uyarısı -->
+                    <div id="newEarthquakeAlert" class="alert alert-danger mb-3 d-none">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <div class="flex-grow-1">
+                                <strong>Yeni Deprem!</strong>
+                                <span id="newEarthquakeInfo"></span>
+                            </div>
+                            <div class="ms-2">
+                                <small class="text-muted" id="alertTimer"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow">
+                        <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
+                            <h2 class="h5 mb-0">
+                                <i class="fas fa-seismograph me-2"></i>
+                                Son 15 Deprem
+                            </h2>
+                            <span class="badge bg-warning text-dark rounded-pill">
+                                <i class="fas fa-sync-alt me-1"></i>Canlı Veri
+                            </span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0" id="earthquakeTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="ps-3"><i class="far fa-calendar-alt me-1"></i>Tarih/Saat</th>
+                                            <th><i class="fas fa-ruler me-1"></i>Büyüklük</th>
+                                            <th><i class="fas fa-layer-group me-1"></i>Derinlik</th>
+                                            <th><i class="fas fa-map-marker-alt me-1"></i>Yer</th>
+                                            <th class="text-end"><i class="fas fa-info-circle me-1"></i>Nitelik</th>
+                                            <th class="text-center"><i class="fas fa-hand-paper me-1"></i>Hissedilme</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="earthquakeData">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-center py-3">
+                                <button id="showMoreBtn" class="btn btn-primary" onclick="toggleShowMore()">
+                                    <i class="fas fa-chevron-down me-1"></i>
+                                    Daha Fazla Göster
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-12">
+                <section class="safety-info">
+                    <div class="card shadow">
+                        <div class="card-header bg-warning text-dark">
+                            <h2 class="h5 mb-0">
+                                <i class="fas fa-shield-alt me-2"></i>
+                                Deprem Güvenliği ve Hazırlık
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="h6 text-primary"><i class="fas fa-clock me-2"></i>Deprem Öncesi Hazırlık</h3>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Acil durum çantası hazırlayın</li>
+                                        <li class="ms-4 small text-muted">
+                                            <i class="fas fa-angle-right me-1"></i>Su ve kuru gıda
+                                            <i class="fas fa-angle-right ms-2 me-1"></i>İlk yardım malzemeleri
+                                            <i class="fas fa-angle-right ms-2 me-1"></i>El feneri ve pil
+                                            <i class="fas fa-angle-right ms-2 me-1"></i>Düdük ve radyo
+                                        </li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Aile afet planı oluşturun</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Evinizde güvenli alanları belirleyin</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Mobilyaları sabitleyin</li>
+                                    </ul>
+                                    
+                                    <h3 class="h6 text-primary mt-3"><i class="fas fa-exclamation-triangle me-2"></i>Deprem Anında</h3>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Çök-Kapan-Tutun hareketini uygulayın</li>
+                                        <li class="ms-4 small text-muted mb-2">
+                                            <i class="fas fa-angle-right me-1"></i>Çök: Dizlerinizin üzerine çökün
+                                            <br><i class="fas fa-angle-right me-1"></i>Kapan: Başınızı ve boynunuzu koruyun
+                                            <br><i class="fas fa-angle-right me-1"></i>Tutun: Sağlam bir yere tutunun
+                                        </li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Pencere ve camlardan uzak durun</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Asansör kullanmayın</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="h6 text-primary"><i class="fas fa-first-aid me-2"></i>Deprem Sonrası</h3>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Sakin olun ve etrafınızı kontrol edin</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Yangın ve gaz kaçağı kontrolü yapın</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Resmi bilgileri takip edin</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>İhtiyaç olmadıkça telefon kullanmayın</li>
+                                    </ul>
+
+                                    <div class="alert alert-info mt-3" role="alert">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>Önemli Numaralar:</strong><br>
+                                        AFAD: 122<br>
+                                        Acil Çağrı: 112<br>
+                                        İtfaiye: 110
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Site Haritası -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">Site Haritası</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="index.html" class="text-white text-decoration-none">
+                                <i class="fas fa-home me-2"></i>Ana Sayfa
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="veri.html" class="text-white text-decoration-none">
+                                <i class="fas fa-chart-bar me-2"></i>İstatistikler
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="hakkinda.html" class="text-white text-decoration-none">
+                                <i class="fas fa-info-circle me-2"></i>Hakkında
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Önemli Linkler -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">Önemli Linkler</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="https://deprem.afad.gov.tr" class="text-white text-decoration-none" target="_blank">
+                                <i class="fas fa-external-link-alt me-2"></i>AFAD
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="http://www.koeri.boun.edu.tr" class="text-white text-decoration-none" target="_blank">
+                                <i class="fas fa-external-link-alt me-2"></i>Kandilli Rasathanesi
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="https://www.turkiye.gov.tr" class="text-white text-decoration-none" target="_blank">
+                                <i class="fas fa-external-link-alt me-2"></i>E-Devlet
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="rss.php" class="text-white text-decoration-none" target="_blank">
+                                <i class="fas fa-rss me-2"></i>RSS Beslemesi
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- İletişim -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">İletişim</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i>Acil Çağrı: 112
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i>AFAD: 122
+                        </li>
+                        <li class="mb-2">
+                            <a href="mailto:info@depremverileri.com" class="text-white text-decoration-none">
+                                <i class="fas fa-envelope me-2"></i>info@depremverileri.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Sosyal Medya -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">Sosyal Medya</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+            
+            <!-- Copyright -->
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">
+                        <small>
+                            &copy; 2024 Deprem Verileri. Tüm hakları saklıdır.
+                            <span class="mx-2">|</span>
+                            <a href="gizlilik.html" class="text-white text-decoration-none">Gizlilik Politikası</a>
+                            <span class="mx-2">|</span>
+                            <a href="sartlar.html" class="text-white text-decoration-none">Kullanım Şartları</a>
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Türkiye Deprem Verileri istatistikleri ve grafikleri">
+    <title>Deprem İstatistikleri - Deprem Verileri</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <i class="fas fa-earthquake me-2"></i>
+                    Türkiye Deprem Verileri
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html"><i class="fas fa-home me-1"></i> Ana Sayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="veri.html"><i class="fas fa-chart-bar me-1"></i> İstatistikler</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="hakkinda.html"><i class="fas fa-info-circle me-1"></i> Hakkında</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="iletisim.html"><i class="fas fa-envelope me-1"></i> İletişim</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mt-4">
+        <div class="row g-4">
+            <!-- İstatistik Kartları -->
+            <div class="col-12">
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="card shadow stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">
+                                    <i class="fas fa-globe me-2"></i>Toplam Deprem
+                                </h5>
+                                <h2 class="display-6 mb-0" id="totalEarthquakes">-</h2>
+                                <small class="text-muted">Son 24 saat</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>Önemli Depremler
+                                </h5>
+                                <h2 class="display-6 mb-0" id="significantEarthquakes">-</h2>
+                                <small class="text-muted">Büyüklük ≥ 4.0</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-danger">
+                                    <i class="fas fa-ruler me-2"></i>En Büyük Deprem
+                                </h5>
+                                <h2 class="display-6 mb-0" id="largestEarthquake">-</h2>
+                                <small class="text-muted" id="largestLocation">-</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">
+                                    <i class="fas fa-chart-line me-2"></i>Ortalama Büyüklük
+                                </h5>
+                                <h2 class="display-6 mb-0" id="averageMagnitude">-</h2>
+                                <small class="text-muted">Son 24 saat</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ek İstatistik Kartları -->
+            <div class="col-12">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card shadow stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-info">
+                                    <i class="fas fa-layer-group me-2"></i>Ortalama Derinlik
+                                </h5>
+                                <h2 class="display-6 mb-0" id="averageDepth">-</h2>
+                                <small class="text-muted">Kilometre cinsinden</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-secondary">
+                                    <i class="fas fa-map-marker-alt me-2"></i>En Aktif Bölge
+                                </h5>
+                                <h2 class="h3 mb-0" id="mostActiveRegion">-</h2>
+                                <small class="text-muted">Son 24 saatte en çok deprem olan bölge</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-purple">
+                                    <i class="fas fa-clock me-2"></i>En Yoğun Saat
+                                </h5>
+                                <h2 class="display-6 mb-0" id="mostActiveHour">-</h2>
+                                <small class="text-muted">En çok deprem kaydedilen saat dilimi</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grafikler -->
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-bar me-2"></i>Büyüklük Dağılımı
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="magnitudeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-line me-2"></i>Derinlik Dağılımı
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="depthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-clock me-2"></i>Zamana Göre Deprem Aktivitesi
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="timeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bölgesel Analiz -->
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-map-marked-alt me-2"></i>Bölgesel Deprem Analizi
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="regionTable">
+                                <thead>
+                                    <tr>
+                                        <th>Bölge</th>
+                                        <th>Deprem Sayısı</th>
+                                        <th>En Büyük Deprem</th>
+                                        <th>Ortalama Büyüklük</th>
+                                        <th>Ortalama Derinlik</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="regionData">
+                                    <!-- JavaScript ile doldurulacak -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bilgi Kartları -->
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-purple text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Deprem Büyüklük Skalası
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm info-table">
+                                <thead>
+                                    <tr>
+                                        <th>Büyüklük</th>
+                                        <th>Tanım</th>
+                                        <th>Etki</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="magnitude-badge magnitude-micro">0-2.9</span></td>
+                                        <td>Mikro</td>
+                                        <td>Genellikle hissedilmez</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="magnitude-badge magnitude-small">3.0-3.9</span></td>
+                                        <td>Küçük</td>
+                                        <td>Hafif hissedilir</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="magnitude-badge magnitude-light">4.0-4.9</span></td>
+                                        <td>Hafif</td>
+                                        <td>Belirgin sarsıntı</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="magnitude-badge magnitude-moderate">5.0-5.9</span></td>
+                                        <td>Orta</td>
+                                        <td>Hasar başlangıcı</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="magnitude-badge magnitude-strong">6.0+</span></td>
+                                        <td>Güçlü</td>
+                                        <td>Ciddi hasar riski</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-teal text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-layer-group me-2"></i>Deprem Derinlik Bilgisi
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm info-table">
+                                <thead>
+                                    <tr>
+                                        <th>Derinlik (km)</th>
+                                        <th>Sınıflandırma</th>
+                                        <th>Özellikler</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="depth-shallow">0+30</td>
+                                        <td>Sığ</td>
+                                        <td>Yüzeye yakın, daha fazla hasar riski</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="depth-medium">30+70</td>
+                                        <td>Orta</td>
+                                        <td>Orta derinlikte, geniş alanda hissedilir</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="depth-deep">70+300</td>
+                                        <td>Derin</td>
+                                        <td>Daha az yüzey etkisi, geniş yayılım</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="depth-very-deep">300+500</td>
+                                        <td>Çok Derin</td>
+                                        <td>Nadirdir, geniş alanda hissedilir</td>
+                                    <tr>
+                                        <td class="depth-very-deep">500+1000</td>
+                                        <td>Yer Kabuguna Yakın</td>
+                                        <td>Hiç Hissedilmeyen </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Site Haritası -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">Site Haritası</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="index.html" class="text-white text-decoration-none">
+                                <i class="fas fa-home me-2"></i>Ana Sayfa
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="veri.html" class="text-white text-decoration-none">
+                                <i class="fas fa-chart-bar me-2"></i>İstatistikler
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="hakkinda.html" class="text-white text-decoration-none">
+                                <i class="fas fa-info-circle me-2"></i>Hakkında
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="iletisim.html" class="text-white text-decoration-none">
+                                <i class="fas fa-envelope me-2"></i>İletişim
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Önemli Linkler -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">Önemli Linkler</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="https://deprem.afad.gov.tr" class="text-white text-decoration-none" target="_blank">
+                                <i class="fas fa-external-link-alt me-2"></i>AFAD
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="http://www.koeri.boun.edu.tr" class="text-white text-decoration-none" target="_blank">
+                                <i class="fas fa-external-link-alt me-2"></i>Kandilli Rasathanesi
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="https://www.turkiye.gov.tr" class="text-white text-decoration-none" target="_blank">
+                                <i class="fas fa-external-link-alt me-2"></i>E-Devlet
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- İletişim -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">İletişim</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i>Acil Çağrı: 112
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i>AFAD: 122
+                        </li>
+                        <li class="mb-2">
+                            <a href="mailto:info@depremverileri.com" class="text-white text-decoration-none">
+                                <i class="fas fa-envelope me-2"></i>info@depremverileri.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Sosyal Medya -->
+                <div class="col-md-3">
+                    <h5 class="mb-3">Sosyal Medya</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white text-decoration-none fs-5">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+            
+            <!-- Copyright -->
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">
+                        <small>
+                            &copy; 2024 Deprem Verileri. Tüm hakları saklıdır.
+                            <span class="mx-2">|</span>
+                            <a href="gizlilik.html" class="text-white text-decoration-none">Gizlilik Politikası</a>
+                            <span class="mx-2">|</span>
+                            <a href="sartlar.html" class="text-white text-decoration-none">Kullanım Şartları</a>
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="veri.js"></script>
+</body>
+</html> 
